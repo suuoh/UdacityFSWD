@@ -2,4 +2,4 @@
 .DS_Store
 ._*
 Thumbs.db
-.pyc
+*.pyc
