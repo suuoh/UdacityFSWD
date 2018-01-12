@@ -1,0 +1,19 @@
+articles
+    author foreign
+    title
+    slug unique
+    lead
+    body
+    time
+    id primary
+authors
+    name
+    bio
+    id primary
+log
+    path
+    ip
+    method
+    status
+    time
+    id primary
