@@ -19,7 +19,8 @@ print
 
 # 2. Top authors by article views sorted in descending order
 c.execute("SELECT authors.name, count(*) AS totalviews "
-            "FROM articles, log, authors WHERE log.path LIKE '%' || articles.slug AND authors.id = articles.author "
+            "FROM articles, log, authors "
+            "WHERE log.path LIKE '%' || articles.slug AND authors.id = articles.author "
             "GROUP BY name "
             "ORDER BY totalviews DESC;")
 for result in c:
@@ -27,7 +28,9 @@ for result in c:
 print
 
 # 3. Days with more than 1% request errors
-c.execute("SELECT day, to_char(cast(access.error as decimal) / (access.error + access.ok) * 100.0, '999D99%') as errorrate FROM (SELECT date(log.time) as day, sum(CASE WHEN log.status LIKE '2%' THEN 1 ELSE 0 END) as ok, sum(CASE WHEN log.status LIKE '4%' THEN 1 ELSE 0 END) as error FROM log GROUP BY day ORDER BY day) as access;")
+c.execute("SELECT * FROM (SELECT errors.day, (cast(errors.visits as decimal) / (errors.visits + successes.visits) * 100) as errorrate FROM (SELECT date(time) as day, count(*) as visits FROM log WHERE status LIKE '4%' GROUP BY day) as errors LEFT JOIN (SELECT date(time) as day, count(*) as visits FROM log WHERE status LIKE '2%' GROUP BY day) as successes ON errors.day = successes.day) as errortable WHERE errorate > 1;")
+
+
 for result in c:
     print result
 print
