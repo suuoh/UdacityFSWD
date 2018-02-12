@@ -4,7 +4,7 @@ import cgi
 class webServerHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
-            if self.path.endswith("/restaurant"):
+            if self.path.endswith("/hello"):
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
