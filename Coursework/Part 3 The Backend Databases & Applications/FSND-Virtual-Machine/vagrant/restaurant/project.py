@@ -50,6 +50,7 @@ def gconnect():
         return response
 
     # Check that access token is valid
+    access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
@@ -59,7 +60,7 @@ def gconnect():
         response = make_response(json.dumps(result.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
         return response
-        
+
     # Verify that the access token is used for the intended user.
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
@@ -76,11 +77,11 @@ def gconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+    # Check to see if user is already logged in
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -106,7 +107,7 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
+    flash("You are now logged in as %s" % login_session['username'])
     print "done!"
     return output
 
