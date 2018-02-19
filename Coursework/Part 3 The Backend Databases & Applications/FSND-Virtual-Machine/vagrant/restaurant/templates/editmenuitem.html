@@ -1,16 +1,40 @@
 <html>
-<head>
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-  <h1>Edit Menu Item</h1>
-
-  <form action="{{url_for('editMenuItem', restaurant_id=restaurant_id, menu_id=menu_id)}}" method='POST'>
-    <p>Name:</p>
-    <input type="text" size="30" placeholder="{{item.name}}" name="name">
+  <head>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <h1>Edit Menu Item</h1>
+    <form action="{{url_for('editMenuItem', restaurant_id=restaurant_id, menu_id=menu_id)}}" method='POST'>
+      <label for="name">Name:</label>
+      <input type ="text" maxlength="100" name="name" value="{{item.name}}"><br />
+      <label for="description">Description:</label>
+      <textarea maxlength="250" rows="3" name="description">{{item.description}}</textarea><br />
+      <label for="price">Price:</label>
+        $<input type ="text" maxlength="10" name="price" value="{{item.price}}">
+      </div><br />
+      <label for="course">Course:</label>
+      <div class="radio">
+        <label>
+        <input type="radio" name="course" id="course1" value="Appetizer" {% if item.course == 'Appetizer' %}checked{% endif %}>Appetizer
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+        <input type="radio" name="course" id="course2" value="Entree" {% if item.course == 'Entree' %}checked{% endif %}>Entree
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+        <input type="radio" name="course" id="course3" value="Dessert" {% if item.course == 'Dessert'%}checked{% endif %}>Dessert
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+        <input type="radio" name="course" id="course4" value="Beverage" {%if item.course =='Beverage'%}checked{% endif %}>Beverage
+        </label>
+      </div>
+    </form>
     <input type="submit" value="Edit">
-  </form>
-  <a href="{{url_for('restaurantMenu', restaurant_id=restaurant_id)}}">Cancel</a>
-
-</body>
+    <a href="{{url_for('restaurantMenu', restaurant_id=restaurant_id)}}">Cancel</a>
+  </body>
 </html>

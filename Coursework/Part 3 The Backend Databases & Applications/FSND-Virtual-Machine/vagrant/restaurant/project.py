@@ -166,6 +166,20 @@ def menuItemJSON(restaurant_id, menu_id):
     item = session.query(MenuItem).filter_by(id=menu_id).one()
     return jsonify(MenuItems=item.serialize)
 
+# Create new restaurant
+@app.route('/restaurant/new/', methods=['GET', 'POST'])
+def newRestaurant():
+    if 'username' not in login_session:
+        return redirect('/login')
+    if request.method == 'POST':
+        newRestaurant = Restaurant(
+            name=request.form['name'], user_id=login_session['user_id'])
+        session.add(newRestaurant)
+        flash('New Restaurant %s Successfully Created' % newRestaurant.name)
+        session.commit()
+        return redirect(url_for('showRestaurants'))
+    else:
+        return render_template('newRestaurant.html')
 
 # Display menu items
 @app.route('/restaurants/<int:restaurant_id>/')

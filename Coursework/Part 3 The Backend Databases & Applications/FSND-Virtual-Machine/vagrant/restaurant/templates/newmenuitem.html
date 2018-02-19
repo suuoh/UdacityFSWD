@@ -1,15 +1,30 @@
 <html>
-<head>
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-  <h1>New Menu Item</h1>
-
-  <form action="{{url_for('newMenuItem', restaurant_id=restaurant_id )}}" method='POST'>
-    <p>Name:</p>
-    <input type='text' size='30' name='name'>
-    <input type='submit' value='Create'>
-  </form>
-
-</body>
+  <head>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <h1>New Menu Item</h1>
+    <form action="{{url_for('newMenuItem', restaurant_id=restaurant_id )}}" method='POST'>
+      <label for="name">Name:</label>
+      <input type='text' maxlength='80' name='name'><br />
+      <label for="description">Description:</label>
+      <input type='text' maxlength='250' name='description'><br />
+      <label for="price">Price (in $):</label>
+      <input type='text' maxlength='8' name='price'><br />
+      <label for="course">Course:</label>
+      <div class="radio">
+        <input type="radio" name="course" id="course1" value="Appetizer">Appetizer
+      </div>
+      <div class="radio">
+        <input type="radio" name="course" id="course2" value="Entree">Entree
+      </div>
+      <div class="radio">
+        <input type="radio" name="course" id="course3" value="Dessert">Dessert
+      </div>
+      <div class="radio">
+        <input type="radio" name="course" id="course4" value="Beverage">Beverage
+      </div>
+      <input type='submit' value='Create'>
+    </form>
+  </body>
 </html>
