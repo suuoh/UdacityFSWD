@@ -127,7 +127,8 @@ def gconnect():
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        response = make_response(json.dumps('Failed to upgrade the authorization code'), 401)
+        response = make_response(
+            json.dumps('Failed to upgrade the authorization code'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
