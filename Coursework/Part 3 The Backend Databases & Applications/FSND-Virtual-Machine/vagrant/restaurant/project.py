@@ -25,7 +25,6 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-# API Endpoint (GET Request)
 @app.route('/login/')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
@@ -275,6 +274,8 @@ def showRestaurants():
     else:
         return render_template('restaurants.html', restaurants=restaurants)
 
+
+# API Endpoint (GET Request)
 # All menu items
 @app.route('/restaurants/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
@@ -283,6 +284,7 @@ def restaurantMenuJSON(restaurant_id):
     return jsonify(MenuItems=[i.serialize for i in items])
 
 
+# API Endpoint (GET Request)
 # Single menu item
 @app.route('/restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON')
 def menuItemJSON(restaurant_id, menu_id):
