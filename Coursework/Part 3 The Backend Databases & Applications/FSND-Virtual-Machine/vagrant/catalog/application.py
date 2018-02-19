@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request
+from flask import redirect, url_for, flash, jsonify
 
 # Import CRUD
 from sqlalchemy import create_engine, asc
@@ -29,6 +30,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 dbsession = DBSession()
 
+
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
@@ -38,6 +40,7 @@ def showLogin():
     return render_template('login.html', STATE=state)
 
 # @app.route('/fbconnect', methods=['POST'])
+
 
 # Google Login
 @app.route('/gconnect', methods=['POST'])
@@ -60,7 +63,8 @@ def gconnect():
 
     # Check that access token is valid
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' %
+           access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
 
@@ -90,7 +94,8 @@ def gconnect():
     stored_access_token = session.get('access_token')
     stored_gplus_id = session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'), 200)
+        response = make_response(json.dumps(
+                   'Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -122,7 +127,8 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += '" style="width:300px; height:300px; border-radius: 150px;'
+    output += '-webkit-border-radius:150px; -moz-border-radius:150px;"> '
     flash("You are now logged in as %s" % session['username'])
     print "Logged in via Google"
     return output
@@ -134,12 +140,14 @@ def gdisconnect():
     # Only disconnect a connected user
     access_token = session.get('access_token')
     if access_token is None:
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(json.dumps(
+                   'Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     # Execute HTTP Get request to revoke current token
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?'
+    url += 'token=%s' % session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
@@ -148,7 +156,8 @@ def gdisconnect():
         return response
     else:
         # If the given token was invalid
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps(
+                   'Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -175,17 +184,20 @@ def disconnect():
         flash("You were not logged in")
         return redirect(url_for('showGenres'))
 
+
 # JSON API endpoint for genres
 @app.route('/genres/JSON')
 def genresJSON():
     genres = dbsession.query(Genre).all()
     return jsonify(genres=[g.serialize for g in genres])
 
+
 # JSON API endpoint for games
 @app.route('/games/JSON')
 def gamesJSON():
     games = dbsession.query(Game).all()
     return jsonify(games=[g.serialize for g in games])
+
 
 # Show all genres
 @app.route('/')
@@ -194,12 +206,14 @@ def showGenres():
     genres = dbsession.query(Genre).order_by(asc(Genre.name)).all()
     return render_template('genres.html', genres=genres)
 
+
 # Show all games in genre
 @app.route('/genres/<int:genre_id>')
 def showGames(genre_id):
     genre = dbsession.query(Genre).filter_by(id=genre_id).one()
     games = dbsession.query(Game).filter_by(genre_id=genre_id).all()
     return render_template('games.html', genre=genre, games=games)
+
 
 # Create new game
 @app.route('/genres/<int:genre_id>/new', methods=['GET', 'POST'])
@@ -208,14 +222,15 @@ def newGame(genre_id):
         return redirect('/login')
     if request.method == 'POST':
         rdate = request.form['release_date'].split('-')
-        newGame = Game(name=request.form['name'], 
-            description=request.form['description'],
-            price=request.form['price'],
-            developer=request.form['developer'],
-            release_date=date(int(rdate[0]), int(rdate[1]), int(rdate[2])),
-            platform=request.form['platform'],
-            genre_id=genre_id,
-            user_id=session['user_id'])
+        newGame = Game(name=request.form['name'],
+                       description=request.form['description'],
+                       price=request.form['price'],
+                       developer=request.form['developer'],
+                       release_date=date(int(rdate[0]), int(rdate[1]),
+                                         int(rdate[2])),
+                       platform=request.form['platform'],
+                       genre_id=genre_id,
+                       user_id=session['user_id'])
         dbsession.add(newGame)
         dbsession.commit()
         flash('New game created successfully!')
@@ -224,21 +239,27 @@ def newGame(genre_id):
         genre = dbsession.query(Genre).filter_by(id=genre_id).one()
         return render_template('newgame.html', genre=genre)
 
+
 # Edit existing game
-@app.route('/genres/<int:genre_id>/<int:game_id>/edit', methods=['GET', 'POST'])
+@app.route('/genres/<int:genre_id>/<int:game_id>/edit',
+           methods=['GET', 'POST'])
 def editGame(genre_id, game_id):
     if 'username' not in session:
         return redirect('/login')
     currentGame = dbsession.query(Game).filter_by(id=game_id).one()
     if currentGame.user_id != session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to edit this. Please create your own in order to edit.');}</script><body onload='myFunction()''>"
+        notAuthScript = "<script>function notAuth() {alert('You are not "
+        notAuthScript += "authorized to edit this. Please create a new game in"
+        notAuthScript += " order to edit.');}</script><body "
+        notAuthScript += "onload='notAuth()'>"
+        return notAuthScript
     if request.method == 'POST':
         rdate = request.form['release_date'].split('-')
         currentGame.name = request.form['name']
         currentGame.description = request.form['description']
         currentGame.price = request.form['price']
         currentGame.developer = request.form['developer']
-        release_date=date(int(rdate[0]), int(rdate[1]), int(rdate[2])),
+        release_date = date(int(rdate[0]), int(rdate[1]), int(rdate[2])),
         currentGame.platform = request.form['platform']
         dbsession.add(currentGame)
         dbsession.commit()
@@ -248,14 +269,20 @@ def editGame(genre_id, game_id):
         genre = dbsession.query(Genre).filter_by(id=genre_id).one()
         return render_template('editgame.html', genre=genre, game=currentGame)
 
+
 # Delete existing game
-@app.route('/genres/<int:genre_id>/<int:game_id>/delete', methods=['GET', 'POST'])
+@app.route('/genres/<int:genre_id>/<int:game_id>/delete',
+           methods=['GET', 'POST'])
 def deleteGame(genre_id, game_id):
     if 'username' not in session:
         return redirect('/login')
     currentGame = dbsession.query(Game).filter_by(id=game_id).one()
     if currentGame.user_id != session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to edit this. Please create your own in order to edit.');}</script><body onload='myFunction()''>"
+        notAuthScript = "<script>function notAuth() {alert('You are not "
+        notAuthScript += "authorized to edit this. Please create a new game in"
+        notAuthScript += " order to edit.');}</script><body "
+        notAuthScript += "onload='notAuth()'>"
+        return notAuthScript
     if request.method == 'POST':
         dbsession.delete(currentGame)
         dbsession.commit()
@@ -264,17 +291,21 @@ def deleteGame(genre_id, game_id):
     else:
         return render_template('deletegame.html', game=currentGame)
 
+
 # User helper functions
 def createUser(session):
-    newUser = User(name=session['username'], email=session['email'], picture=session['picture'])
+    newUser = User(name=session['username'], email=session['email'],
+                   picture=session['picture'])
     dbsession.add(newUser)
     dbsession.commit()
     user = dbsession.query(User).filter_by(email=session['email']).one()
     return user.id
 
+
 def getUserInfo(user_id):
     user = dbsession.query(User).filter_by(id=user_id).one()
     return user
+
 
 def getUserID(email):
     try:

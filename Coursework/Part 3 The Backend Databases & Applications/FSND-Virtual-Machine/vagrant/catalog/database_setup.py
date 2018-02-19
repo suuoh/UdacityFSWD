@@ -8,6 +8,7 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+
 # User Class
 class User(Base):
     # Table
@@ -29,6 +30,7 @@ class User(Base):
             'picture': self.picture,
         }
 
+
 # Genre Class
 class Genre(Base):
     # Table
@@ -45,6 +47,7 @@ class Genre(Base):
             'id': self.id,
             'name': self.name,
         }
+
 
 # Game Class
 class Game(Base):
@@ -74,7 +77,7 @@ class Game(Base):
             'price': self.price,
             'developer': self.developer,
             'release_date': self.release_date,
-            'platform' : self.platform,
+            'platform': self.platform,
             'genre_id': self.genre_id,
             'user_id': self.user_id,
         }
