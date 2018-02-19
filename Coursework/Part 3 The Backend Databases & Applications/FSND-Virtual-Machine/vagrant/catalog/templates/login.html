@@ -30,7 +30,7 @@
             $('#result').html('Login successful!<br />' + result + '<br />Redirecting...')
             setTimeout(function() {
               window.location.href = "/genres";
-            }, 4000);
+            }, 3000);
           } else if (authResult['error']) {
             console.log("There was an error: " + authResult['error']);
           } else {

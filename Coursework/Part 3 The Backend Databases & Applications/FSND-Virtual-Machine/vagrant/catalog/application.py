@@ -14,6 +14,7 @@ import httplib2
 import json
 from flask import make_response
 import requests
+from datetime import date
 
 app = Flask(__name__)
 
@@ -195,21 +196,23 @@ def showGenres():
 
 # Show all games in genre
 @app.route('/genres/<int:genre_id>')
-def showGames():
+def showGames(genre_id):
+    genre = dbsession.query(Genre).filter_by(id=genre_id).one()
     games = dbsession.query(Game).filter_by(genre_id=genre_id).all()
-    return render_template('games.html', genre_id=genre_id, games=games)
+    return render_template('games.html', genre=genre, games=games)
 
 # Create new game
-@app.route('/genres/<int:genre_id>/new')
+@app.route('/genres/<int:genre_id>/new', methods=['GET', 'POST'])
 def newGame(genre_id):
     if 'username' not in session:
         return redirect('/login')
     if request.method == 'POST':
+        rdate = request.form['release_date'].split('-')
         newGame = Game(name=request.form['name'], 
             description=request.form['description'],
             price=request.form['price'],
             developer=request.form['developer'],
-            release_date=request.form['release_date'],
+            release_date=date(int(rdate[0]), int(rdate[1]), int(rdate[2])),
             platform=request.form['platform'],
             genre_id=genre_id,
             user_id=session['user_id'])
@@ -218,10 +221,11 @@ def newGame(genre_id):
         flash('New game created successfully!')
         return redirect(url_for('showGames', genre_id=genre_id))
     else:
-        return render_template('newgame.html', genre_id=genre_id)
+        genre = dbsession.query(Genre).filter_by(id=genre_id).one()
+        return render_template('newgame.html', genre=genre)
 
 # Edit existing game
-@app.route('/genres/<int:genre_id>/<int:game_id>/edit')
+@app.route('/genres/<int:genre_id>/<int:game_id>/edit', methods=['GET', 'POST'])
 def editGame(genre_id, game_id):
     if 'username' not in session:
         return redirect('/login')
@@ -243,7 +247,7 @@ def editGame(genre_id, game_id):
         return render_template('editgame.html', restaurant_id=restaurant_id, menu_id=menu_id, item=menuItem)
 
 # Delete existing game
-@app.route('/genres/<int:genre_id>/<int:game_id>/delete')
+@app.route('/genres/<int:genre_id>/<int:game_id>/delete', methods=['GET', 'POST'])
 def deleteGame(genre_id, game_id):
     if 'username' not in session:
         return redirect('/login')
@@ -254,9 +258,9 @@ def deleteGame(genre_id, game_id):
         dbsession.delete(currentGame)
         dbsession.commit()
         flash('Game deleted successfully!')
-        return redirect(url_for('showGames', restaurant_id=restaurant_id))
+        return redirect(url_for('showGames', genre_id=genre_id))
     else:
-        return render_template('deletegame.html', restaurant_id=restaurant_id, menu_id=menu_id, item=menuItem)
+        return render_template('deletegame.html', game=currentGame)
 
 # User helper functions
 def createUser(session):
