@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 # Import CRUD
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Restaurant, MenuItem
+from database_setup import Base, Restaurant, MenuItem, User
 
 # NEW IMPORTS FOR OAUTH
 from flask import session as login_session
@@ -19,7 +19,7 @@ CLIENT_ID = json.loads(open('client_secrets.json', 'r').read())['web']['client_i
 app = Flask(__name__)
 
 # Create session and connect to databse
-engine = create_engine('sqlite:///restaurantMenu.db')
+engine = create_engine('sqlite:///restaurantmenuwithusers.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -180,8 +180,10 @@ def restaurantMenu(restaurant_id):
 def newMenuItem(restaurant_id):
     if 'username' not in login_session:
         return redirect('/login')
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if request.method == 'POST':
-        newItem = MenuItem(name=request.form['name'], restaurant_id=restaurant_id)
+        newItem = MenuItem(name=request.form['name'], description=request.form['description'], price=request.form[
+                           'price'], course=request.form['course'], restaurant_id=restaurant_id, user_id=restaurant.user_id)
         session.add(newItem)
         session.commit()
         flash("New menu item created!")
@@ -219,6 +221,25 @@ def deleteMenuItem(restaurant_id, menu_id):
         return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
     else:
         return render_template('deletemenuitem.html', restaurant_id=restaurant_id, item=menuItem)
+
+# User helper functions
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session['email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'
