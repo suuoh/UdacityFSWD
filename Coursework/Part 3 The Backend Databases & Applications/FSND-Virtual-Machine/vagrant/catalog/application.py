@@ -233,18 +233,20 @@ def editGame(genre_id, game_id):
     if currentGame.user_id != session['user_id']:
         return "<script>function myFunction() {alert('You are not authorized to edit this. Please create your own in order to edit.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
+        rdate = request.form['release_date'].split('-')
         currentGame.name = request.form['name']
         currentGame.description = request.form['description']
         currentGame.price = request.form['price']
         currentGame.developer = request.form['developer']
-        currentGame.release_date = request.form['release_date']
+        release_date=date(int(rdate[0]), int(rdate[1]), int(rdate[2])),
         currentGame.platform = request.form['platform']
         dbsession.add(currentGame)
         dbsession.commit()
         flash('Game edited successfully!')
-        return redirect(url_for('showGames', restaurant_id=restaurant_id))
+        return redirect(url_for('showGames', genre_id=genre_id))
     else:
-        return render_template('editgame.html', restaurant_id=restaurant_id, menu_id=menu_id, item=menuItem)
+        genre = dbsession.query(Genre).filter_by(id=genre_id).one()
+        return render_template('editgame.html', genre=genre, game=currentGame)
 
 # Delete existing game
 @app.route('/genres/<int:genre_id>/<int:game_id>/delete', methods=['GET', 'POST'])
