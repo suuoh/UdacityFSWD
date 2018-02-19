@@ -25,6 +25,13 @@
       {% endif %}
       {% endwith %}
     </div>
+
+    {%if 'username' not in session %}
+      <a href="{{url_for('showLogin')}}">Click Here to Login </a>
+      {% else %}
+      <a href="{{url_for('disconnect')}}">Logout </a>
+    {% endif %}
+
     {% for restaurant in restaurants %}
     <a href = "{{url_for('restaurantMenu', restaurant_id = restaurant.id)}}">
       <div class="row">
