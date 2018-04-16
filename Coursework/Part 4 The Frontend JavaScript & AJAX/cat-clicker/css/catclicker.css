@@ -2,6 +2,10 @@
     display: flex;
 }
 
-.container {
-    flex: 50%;
+.sidebar {
+    flex: 30%;
+}
+
+.main {
+    flex: 70%;
 }
