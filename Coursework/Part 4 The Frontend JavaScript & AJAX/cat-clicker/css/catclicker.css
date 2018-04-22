@@ -9,3 +9,7 @@
 .main {
     flex: 70%;
 }
+
+.main #cat-picture {
+    max-height: 500px;
+}
