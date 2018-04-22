@@ -19,6 +19,26 @@
             <p id="cat-clicks"></p>
         </div>
     </div>
+    <div class="row">
+        <div class="sidebar">
+            <button type="button" id="admin-button">Admin</button>
+        </div>
+        <div class="main">
+            <form id="admin-form">
+                <label for="admin-name">Cat Name</label>
+                <input type="text" id="admin-name">
+                <br />
+                <label for="admin-picture">Picture Link</label>
+                <input type="url" id="admin-picture">
+                <br />
+                <label for="admin-clicks">Number of Clicks</label>
+                <input type="number" id="admin-clicks">
+                <br />
+                <input type="button" id="admin-submit" value="Submit">
+                <input type="button" id="admin-cancel" value="Cancel">
+            </form>
+        </div>
+    </div>
     <script src="js/catclicker.js"></script>
 </body>
 </html>

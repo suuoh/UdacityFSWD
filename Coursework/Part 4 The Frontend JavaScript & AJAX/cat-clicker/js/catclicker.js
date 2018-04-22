@@ -26,7 +26,9 @@ var model = {
         name: "Snowball",
         picture: "https://c1.staticflickr.com/4/3607/3406931492_f9420b8659_b.jpg",
         clicks: 0
-    }]
+    }],
+
+    adminEnabled: false
 
 };
 
@@ -39,6 +41,7 @@ var octopus = {
         // Initialize views
         viewCatList.init();
         viewCat.init();
+        viewAdmin.init();
     },
 
     getCats: function() {
@@ -58,6 +61,30 @@ var octopus = {
         model.currentCat.clicks++;
         viewCat.render();
     },
+
+    getAdmin: function() {
+        return model.adminEnabled;
+    },
+
+    setAdmin: function(state) {
+        model.adminEnabled = state;
+        viewAdmin.render();
+    },
+
+    adminSubmit: function() {
+        adminValues = viewAdmin.getValues();
+        model.currentCat.name = adminValues.name;
+        model.currentCat.picture = adminValues.picture;
+        model.currentCat.clicks = adminValues.clicks;
+
+        // Disable admin view on submit
+        model.adminEnabled = false;
+        
+        // Re-render all views
+        viewCatList.render();
+        viewCat.render();
+        viewAdmin.render();
+    }
 };
 
 // View of list of cats
@@ -113,10 +140,60 @@ var viewCat = {
     render: function() {
         // Update current cat details
         var currentCat = octopus.getCurrentCat();
-
         this.catName.textContent = currentCat.name;
         this.catPicture.src = currentCat.picture;
         this.catClicks.textContent = currentCat.clicks;
+    }
+};
+
+// View admin section
+var viewAdmin = {
+    init: function() {
+        this.adminButton = document.getElementById("admin-button");
+        this.adminForm = document.getElementById("admin-form");
+        this.adminName = document.getElementById("admin-name");
+        this.adminPicture = document.getElementById("admin-picture");
+        this.adminClicks = document.getElementById("admin-clicks");
+        this.adminSubmit = document.getElementById("admin-submit");
+        this.adminCancel = document.getElementById("admin-cancel");
+
+        // Add listeners to buttons
+        this.adminButton.addEventListener("click", function() {
+            octopus.setAdmin(true);
+        });
+        this.adminSubmit.addEventListener("click", function() {
+            octopus.adminSubmit();
+        });
+        this.adminCancel.addEventListener("click", function() {
+            octopus.setAdmin(false);
+        });
+
+        viewAdmin.render();
+    },
+
+    render: function() {
+        if (octopus.getAdmin()) {
+            // Show admin inputs with current values
+            var currentCat = octopus.getCurrentCat();
+            this.adminName.value = currentCat.name;
+            this.adminPicture.value = currentCat.picture;
+            this.adminClicks.value = currentCat.clicks;
+            this.adminForm.style.display = "block";
+        } else {
+            // Hide admin inputs and clear values
+            this.adminForm.style.display = "none";
+            this.adminName.value = "";
+            this.adminPicture.value = "";
+            this.adminClicks.value = "";
+        }
+    },
+
+    getValues: function() {
+        return {
+            name: this.adminName.value,
+            picture: this.adminPicture.value,
+            clicks: this.adminClicks.value
+        };
     }
 };
 
