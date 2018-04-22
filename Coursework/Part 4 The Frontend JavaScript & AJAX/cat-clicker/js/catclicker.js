@@ -1,3 +1,4 @@
+// Model
 var model = {
     currentCat: null,
 
@@ -29,7 +30,17 @@ var model = {
 
 };
 
+// Controller/Octopus
 var octopus = {
+    init: function() {
+        // Set current cat to first cat, to start off with
+        model.currentCat = model.cats[0];
+
+        // Initialize views
+        viewCatList.init();
+        viewCat.init();
+    },
+
     getCats: function() {
         return model.cats;
     },
@@ -47,32 +58,36 @@ var octopus = {
         model.currentCat.clicks++;
         viewCat.render();
     },
-
-    init: function() {
-        model.currentCat = model.cats[0];
-        viewCatList.init();
-        viewCat.init();
-    }
 };
 
+// View of list of cats
 var viewCatList = {
     init: function() {
         this.catList = document.getElementById("cat-list");
+        
         viewCatList.render();
     },
 
     render: function() {
         var cats = octopus.getCats();
+        this.catList.innerHTML = "";
+        
         for (var i = 0; i < cats.length; i++) {
+            // Create li and a elements for this cat
             var li = document.createElement("li");
             var a = document.createElement("a");
             a.href = "#";
             var aText = document.createTextNode(cats[i].name);
+            
+            // Add click listener to cat list link
+            // Use closure to handle variable scope issues
             a.addEventListener("click", (function(currentCat) {
                 return function() {
                     octopus.setCurrentCat(currentCat);
                 };
             })(cats[i]));
+
+            // Add elements to DOM
             a.appendChild(aText);
             li.appendChild(a);
             this.catList.appendChild(li);
@@ -80,23 +95,30 @@ var viewCatList = {
     }
 };
 
+// View of details on current cat
 var viewCat = {
     init: function() {
         this.catName = document.getElementById("cat-name");
         this.catPicture = document.getElementById("cat-picture");
         this.catClicks = document.getElementById("cat-clicks");
+        
+        // Add click listener to cat picture
         this.catPicture.addEventListener("click", function() {
             octopus.catClicked();
         })
+
         viewCat.render();
     },
     
     render: function() {
-        currentCat = octopus.getCurrentCat();
+        // Update current cat details
+        var currentCat = octopus.getCurrentCat();
+
         this.catName.textContent = currentCat.name;
         this.catPicture.src = currentCat.picture;
         this.catClicks.textContent = currentCat.clicks;
     }
 };
 
+// Initialize app
 octopus.init();
