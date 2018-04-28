@@ -1,4 +1,4 @@
-var ViewModel = function() {
+var Cat = function() {
     this.clicks = ko.observable(0);
     this.name = ko.observable("April");
     this.level = ko.computed(function() {
@@ -13,9 +13,14 @@ var ViewModel = function() {
     }, this);
     this.picture = ko.observable("img/22252709_010df3379e_z.jpg");
     this.attribution = ko.observable("https://flickr.com");
+    this.nicknames = ko.observableArray(["Fluffy", "Jack", "Cookie"]);
+}
+
+var ViewModel = function() {
+    this.currentCat = ko.observable(new Cat());
 
     this.catClicked = function() {
-        this.clicks(this.clicks() + 1);
+        this.currentCat().clicks(this.currentCat().clicks() + 1);
     };
 }
 
