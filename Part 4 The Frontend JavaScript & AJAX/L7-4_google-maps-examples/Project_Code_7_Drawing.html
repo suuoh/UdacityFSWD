@@ -366,12 +366,14 @@
             markers[i].setMap(null);
           }
         }
+
+        window.alert(google.maps.geometry.spherical.computeArea(polygon.getPath()) + " meters squared");
       }
     </script>
 
     <script async defer
         src=
-        "https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=MYAPIKEY&v=3&callback=initMap">
+        "https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyCtKCLQo8dU3lBuWFGxg7rP6Y1LXWOu9tc&v=3&callback=initMap">
     </script>
 
   </body>
