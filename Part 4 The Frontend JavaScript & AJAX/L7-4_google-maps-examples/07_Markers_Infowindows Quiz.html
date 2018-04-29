@@ -20,11 +20,162 @@
     <div id="map"></div>
     <script type="text/javascript"> // Create a map variable
       var map;
+
+      var styles = [
+      {
+        "featureType": "administrative.country",
+        "elementType": "geometry.fill",
+        "stylers": [
+        {
+          "color": "#1bcaf5"
+        }
+        ]
+      },
+      {
+        "featureType": "administrative.land_parcel",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+          "color": "#1895c5"
+        }
+        ]
+      },
+      {
+        "featureType": "administrative.neighborhood",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "administrative.province",
+        "elementType": "geometry.fill",
+        "stylers": [
+        {
+          "color": "#1bcaf5"
+        }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "elementType": "labels.text",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "poi.business",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "poi.park",
+        "elementType": "labels.text",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "labels",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "road.arterial",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry.fill",
+        "stylers": [
+        {
+          "color": "#116fcc"
+        }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "labels",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "road.local",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "transit",
+        "elementType": "labels",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "geometry.fill",
+        "stylers": [
+        {
+          "color": "#52bfe9"
+        }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "labels.text",
+        "stylers": [
+        {
+          "visibility": "off"
+        }
+        ]
+      }
+      ];
       // Function to initialize the map within the map div
       function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: 40.74135, lng: -73.99802},
-              zoom: 14
+              zoom: 14,
+              styles: styles
           });
           // Create a single latLng literal object.
           var singleLatLng = {lat: 40.74135, lng: -73.99802};
