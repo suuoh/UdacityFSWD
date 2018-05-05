@@ -1,0 +1,1 @@
+https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyCtKCLQo8dU3lBuWFGxg7rP6Y1LXWOu9tc&origin=Florence&destination=Milan&waypoints=optimize:true|Genova|Bologna|Venice&region=it
