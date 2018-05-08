@@ -1,3 +1,11 @@
+#main {
+  padding: 0;
+}
+
+#map-panel {
+  height: 100vh;
+}
+
 #map {
   height: 100%;
 }
