@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <title>Toronto Map</title>
@@ -10,37 +10,38 @@
 </head>
 
 <body>
-  <nav class="navbar is-danger" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <div class="navbar-item">
-        <span class="is-size-5 has-text-weight-bold">mapTO</span>
-      </div>
-      <div class="navbar-item">
-        <span class="is-size-7">Built by <a href="https://melvin.io">Melvin</a> 2018.</span>
-      </div>
-    </div>
-  </nav>
+  <section class="hero is-primary is-fullheight is-bold">
 
-  <div class="container is-fullhd">
-    <div class="columns">
-      <div class="column is-4 has-background-primary">
-        <aside class="menu">
-          <p class="menu-label">
-            General
-          </p>
-          <ul class="menu-list">
-            <li><a>Restaurants</a></li>
-            <li><a>Museums</a></li>
-          </ul>
-        </aside>
-      </div>
-      <div class="column is-9 has-background-warning">
-        <div id="map">
-          Google Maps
+    <div class="hero-head">
+    </div>
+
+    <div id="main" class="hero-body">
+      <div class="container">
+        <div class="columns is-fullheight">
+          <div class="column is-3 has-background-primary">
+            <aside class="menu">
+              <p class="menu-label">
+                General
+              </p>
+              <ul class="menu-list">
+                <li><a>Restaurants</a></li>
+                <li><a>Museums</a></li>
+              </ul>
+            </aside>
+          </div>
+          <div id="map-panel" class="column is-9">
+            <div id="map">
+              Google Maps
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="hero-foot">
+    </div>
+  </section>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.12/js/all.js" integrity="sha384-Voup2lBiiyZYkRto2XWqbzxHXwzcm4A5RfdfG6466bu5LqjwwrjXCMBQBLMWh7qR" crossorigin="anonymous"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNDtRz0TyVfnODlSWL-I4LIq9dQBZ3Edw&v=3&callback=initMap"></script>
