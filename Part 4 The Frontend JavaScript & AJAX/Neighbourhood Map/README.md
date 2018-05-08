@@ -1,5 +1,5 @@
 # Neighbourhood Map Project
-A custom web application that displays points of interest in Toronto, Canada.
+A custom web application that displays points of interest in Toronto, Canada. [CodePen](https://codepen.io/suuoh/pen/NMwmYN).
 
 **To run:**
 * In a web browser, open the `index.html`
