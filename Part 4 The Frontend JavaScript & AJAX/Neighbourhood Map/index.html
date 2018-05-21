@@ -19,20 +19,31 @@
     <div class="row h-100">
       <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky">
+          <h8 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+            <a href="#" id="reset-filters">Reset Filters</a>
+          </h8>
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>General</span>
+            <span>Categories</span>
           </h6>
-          <ul class="nav flex-column">
+          <ul class="nav flex-column" data-bind="foreach: categories">
             <li class="nav-item">
-              <a class="nav-link active" href="#">
-                  Restaurants
-                </a>
+              <a class="nav-link" href="#" data-bind="text: category, click: $parent.filterMap">
+              </a>
+            </li>
+          </ul>
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Results</span>
+          </h6>
+          <ul class="nav flex-column" data-bind="foreach: results">
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-bind="text: result, click: $parent.filterMap">
+              </a>
             </li>
           </ul>
         </div>
       </nav>
 
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <main role="main" class="col-md-9 col-lg-10 px-0">
         <div id="map">
         </div>
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -40,14 +51,13 @@
       </main>
     </div>
   </div>
-
-  <script src="app.js"></script>
   <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.12/js/all.js" integrity="sha384-Voup2lBiiyZYkRto2XWqbzxHXwzcm4A5RfdfG6466bu5LqjwwrjXCMBQBLMWh7qR" crossorigin="anonymous"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNDtRz0TyVfnODlSWL-I4LIq9dQBZ3Edw&v=3&callback=initMap"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>
