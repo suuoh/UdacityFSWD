@@ -1,5 +1,5 @@
 var map;
-var initialPlaces = [
+var places = [
 {
     name: "Terroni",
     category: "Restaurant",
@@ -32,6 +32,7 @@ var initialPlaces = [
 }
 ];
 var markers = [];
+var infoWindow;
 var mapStyles = [
 {
     featureType: "administrative",
@@ -114,24 +115,47 @@ var mapStyles = [
 ];
 
 function initMap() {
+    // Initialize map
     map = new google.maps.Map(document.getElementById("map"), {
-        center: {
-            lat: 43.6596746,
-            lng: -79.3929231
-        },
-        zoom: 14
+        center: {lat: 43.6596746, lng: -79.3929231},
+        zoom: 14,
+        mapTypeControl: false
     });
-}
 
-var Place = function(data) {};
+    for (var i = 0; i < places.length; i++) {
+        // Create marker in map
+        var name = places[i].name;
+        var position = places[i].location;
+        var marker = new google.maps.Marker({
+            position: position,
+            title: name,
+            animation: google.maps.Animation.DROP,
+            id: i,
+            map: map
+        });
+
+        // Add marker to array
+        markers.push(marker);
+
+        // Open InfoWindow when marker is clicked
+        marker.addListener("click", function() {
+            if (infoWindow.marker != this) {
+                infoWindow.marker = this;
+                infoWindow.setContent("<h3>" + this.name + "</h3>");
+                infoWindow.open(map, this);
+                // Close InfoWindow
+                infoWindow.addListener("closeclick", function() {
+                    infoWindow.marker = null;
+                });
+            }
+        });
+    }
+}
 
 var ViewModel = function() {
     var self = this;
-    self.places = ko.observableArray([]);
+    // Category filters
     self.categories = ko.observableArray(["Restaurant", "Attraction"]);
-    /*initialPlaces.forEach(function(place) {
-        self.places.push(new Place(place));
-    });*/
     self.results = ko.observableArray([]);
 
     self.filterMap = function() {};
