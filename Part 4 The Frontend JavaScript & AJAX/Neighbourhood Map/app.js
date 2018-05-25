@@ -1,6 +1,13 @@
 var map;
 var places = [
     {
+        name: "Casa Loma",
+        category: "Attraction",
+        location: {lat: 43.6780371, lng: -79.4094439},
+        place_id: "ChIJs6Elz500K4gRT1jWAsHIfGE",
+        address: "1 Austin Terrace, Toronto, ON M5R 1X8"
+    },
+    {
         name: "Chase Fish and Oyster",
         category: "Restaurant",
         location: {lat: 43.651082, lng: -79.379378},
@@ -36,11 +43,32 @@ var places = [
         address: "100 Queens Park, Toronto, ON M5S 2C6"
     },
     {
+        name: "Snakes & Lattes",
+        category: "Entertainment",
+        location: {lat: 43.6649006, lng: -79.4131884},
+        place_id: "ChIJc-8hbJI0K4gRDhU_qf-1yII",
+        address: "600 Bloor St W, Toronto, ON M6G 1K4"
+    },
+    {
         name: "Terroni",
         category: "Restaurant",
         location: {lat: 43.650916, lng: -79.375685},
         place_id: "ChIJT1kRzTPL1IkRqYD-w3lcprg",
         address: "57 Adelaide St E, Toronto, ON M5C 1K6"
+    },
+    {
+        name: "TIFF Bell Lightbox",
+        category: "Entertainment",
+        location: {lat: 43.6465295, lng: -79.3904082},
+        place_id: "ChIJewSvlNA0K4gRlkERDVrMZ08",
+        address: "350 King St W, Toronto, ON M5V 3X5"
+    },
+    {
+        name: "Toronto City Hall",
+        category: "Attraction",
+        location: {lat: 43.6534399, lng: -79.38409009999999},
+        place_id: "ChIJ81rnZsw0K4gR4CIzkYYawjE",
+        address: "100 Queen St W, Toronto, ON M5H 2N2"
     },
     {
         name: "University of Toronto",
@@ -196,8 +224,9 @@ var ViewModel = function() {
     var self = this;
     // Category filters
     self.categories = ko.observableArray([
-        "Restaurant",
         "Attraction",
+        "Entertainment",
+        "Restaurant",
         "School"
     ]);
     self.results = ko.observableArray([]);
