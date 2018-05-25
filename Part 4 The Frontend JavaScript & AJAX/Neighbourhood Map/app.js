@@ -4,35 +4,53 @@ var places = [
     name: "Terroni",
     category: "Restaurant",
     location: {lat: 43.650916, lng: -79.375685},
-    place_id: "ChIJT1kRzTPL1IkRqYD-w3lcprg"
+    place_id: "ChIJT1kRzTPL1IkRqYD-w3lcprg",
+    address: "57 Adelaide St E, Toronto, ON M5C 1K6"
 },
 {
     name: "Miku",
     category: "Restaurant",
     location: {lat: 43.6412346, lng: -79.3773697},
-    place_id: "ChIJbRVhVirL1IkRKu9XddGTiKU"
+    place_id: "ChIJbRVhVirL1IkRKu9XddGTiKU",
+    address: "10 Bay St # 105, Toronto, ON M5J 2R8"
 },
 {
     name: "Chase Fish and Oyster",
     category: "Restaurant",
     location: {lat: 43.651082, lng: -79.379378},
-    place_id: "ChIJ13xO78EzK4gRdwEiU8N4oCk"
+    place_id: "ChIJ13xO78EzK4gRdwEiU8N4oCk",
+    address: "10 Temperance St, first floor, Toronto, ON M5H 1Y4"
 },
 {
     name: "Ripley's Aquarium of Canada",
     category: "Attraction",
     location: {lat: 43.64240299999999, lng: -79.385971},
-    place_id: "ChIJWwS21dU0K4gRPSGMKRkar40"
+    place_id: "ChIJWwS21dU0K4gRPSGMKRkar40",
+    address: "288 Bremner Blvd, Toronto, ON M5V 3L9"
 },
 {
     name: "CN Tower",
     category: "Attraction",
     location: {lat: 43.6425662, lng: -79.3870568},
-    place_id: "ChIJmzrzi9Y0K4gRgXUc3sTY7RU"
+    place_id: "ChIJmzrzi9Y0K4gRgXUc3sTY7RU",
+    address: "301 Front St W, Toronto, ON M5V 2T6"
+},
+{
+    name: "University of Toronto",
+    category: "School",
+    location: {lat: 43.6628917, lng: -79.39565640000001},
+    place_id: "ChIJm_0x87g0K4gR93ZadrabHY0",
+    address: "27 King's College Cir, Toronto, ON M5S 3H7"
+},
+{
+    name: "Royal Ontario Museum",
+    category: "Attraction",
+    location: {lat: 43.6677097, lng: -79.3947771},
+    place_id: "ChIJE-Xa87o0K4gRkvXFHuE0hMk",
+    address: "100 Queens Park, Toronto, ON M5S 2C6"
 }
 ];
 var markers = [];
-var infoWindow;
 var mapStyles = [
 {
     featureType: "administrative",
@@ -124,11 +142,12 @@ function initMap() {
 
     for (var i = 0; i < places.length; i++) {
         // Create marker in map
-        var name = places[i].name;
-        var position = places[i].location;
         var marker = new google.maps.Marker({
-            position: position,
-            title: name,
+            position: places[i].location,
+            title: places[i].name,
+            address: places[i].address,
+            category: places[i].category,
+            place_id: places[i].place_id,
             animation: google.maps.Animation.DROP,
             id: i,
             map: map
@@ -138,16 +157,25 @@ function initMap() {
         markers.push(marker);
 
         // Open InfoWindow when marker is clicked
+        var infoWindow = new google.maps.InfoWindow();
         marker.addListener("click", function() {
-            if (infoWindow.marker != this) {
-                infoWindow.marker = this;
-                infoWindow.setContent("<h3>" + this.name + "</h3>");
-                infoWindow.open(map, this);
-                // Close InfoWindow
-                infoWindow.addListener("closeclick", function() {
-                    infoWindow.marker = null;
-                });
-            }
+            populateInfoWindow(this, infoWindow);
+        });
+    }
+}
+
+function populateInfoWindow(marker, infowindow) {
+    if (infowindow.marker != marker) {
+        infowindow.marker = marker;
+        // Set infowindow content to include link to Google Maps in new window
+        infowindow.setContent("<h4>" + marker.title + "</h4><div><p><em>" + marker.category + 
+            "</em></p><p>" + marker.address + 
+            "</p><p><a href='https://www.google.com/maps/dir/?api=1&destination=" + marker.title + 
+            "&destination_place_id=" + marker.place_id + "' target='_blank'>Get Directions</a></div>");
+        infowindow.open(map, marker);
+        // Close InfoWindow
+        infowindow.addListener("closeclick", function() {
+            infowindow.marker = null;
         });
     }
 }
@@ -155,7 +183,7 @@ function initMap() {
 var ViewModel = function() {
     var self = this;
     // Category filters
-    self.categories = ko.observableArray(["Restaurant", "Attraction"]);
+    self.categories = ko.observableArray(["Restaurant", "Attraction", "School"]);
     self.results = ko.observableArray([]);
 
     self.filterMap = function() {};
