@@ -51,6 +51,7 @@ var places = [
 }
 ];
 var markers = [];
+var infoWindow;
 var mapStyles = [
 {
     featureType: "administrative",
@@ -157,7 +158,7 @@ function initMap() {
         markers.push(marker);
 
         // Open InfoWindow when marker is clicked
-        var infoWindow = new google.maps.InfoWindow();
+        infoWindow = new google.maps.InfoWindow();
         marker.addListener("click", function() {
             populateInfoWindow(this, infoWindow);
         });
@@ -177,6 +178,8 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.addListener("closeclick", function() {
             infowindow.marker = null;
         });
+
+        bounceMarker(marker);
     }
 }
 
@@ -190,7 +193,24 @@ var ViewModel = function() {
     });
 
     self.filterMap = function() {};
+
+    self.focusPlace = function(place) {
+        console.log(place.name);
+        for (var i = 0; i < markers.length; i++) {
+            var marker = markers[i];
+            if (marker.title === place.name) {
+                populateInfoWindow(marker, infoWindow);
+            }
+        }
+    }
 };
+
+function bounceMarker(marker) {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    window.setTimeout(function() {
+        marker.setAnimation(null);
+    }, 1000);
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     ko.applyBindings(new ViewModel());
