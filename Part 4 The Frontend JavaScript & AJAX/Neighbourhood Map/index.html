@@ -27,7 +27,7 @@
           </h6>
           <ul class="nav flex-column" data-bind="foreach: categories">
             <li class="nav-item">
-              <a class="nav-link" href="#" data-bind="text: category, click: $parent.filterMap">
+              <a class="nav-link" href="#" data-bind="text: $data, click: $parent.filterMap">
               </a>
             </li>
           </ul>
