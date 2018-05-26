@@ -175,7 +175,7 @@ var mapStyles = [
 function initMap() {
     // Initialize map
     map = new google.maps.Map(document.getElementById("map"), {
-        center: {lat: 43.6596746, lng: -79.3929231},
+        center: {lat: 43.659638669778936, lng: -79.39443669999997},
         zoom: 14,
         mapTypeControl: false
     });
@@ -210,17 +210,17 @@ function populateInfoWindow(marker, infowindow) {
         // Set infowindow content to include link to Google Maps in new window
         infowindow.setContent(
             "<h4>" +
-                marker.title +
-                "</h4><div><p><em>" +
-                marker.category +
-                "</em></p><p>" +
-                marker.address +
-                "</p><p><a href='https://www.google.com/maps/dir/?api=1&destination=" +
-                marker.title +
-                "&destination_place_id=" +
-                marker.place_id +
-                "' target='_blank'>Get Directions</a></div>"
-        );
+            marker.title +
+            "</h4><div><p><em>" +
+            marker.category +
+            "</em></p><p>" +
+            marker.address +
+            "</p><p><a href='https://www.google.com/maps/dir/?api=1&destination=" +
+            marker.title +
+            "&destination_place_id=" +
+            marker.place_id +
+            "' target='_blank'>Get Directions</a></div>"
+            );
         infowindow.open(map, marker);
         // Close InfoWindow
         infowindow.addListener("closeclick", function() {
@@ -239,7 +239,7 @@ var ViewModel = function() {
         "Entertainment",
         "Restaurant",
         "School"
-    ]);
+        ]);
     self.results = ko.observableArray([]);
     places.forEach(function(place) {
         self.results.push(place);
@@ -255,11 +255,11 @@ var ViewModel = function() {
         var extendNE = new google.maps.LatLng(
             bounds.getNorthEast().lat() + 0.01,
             bounds.getNorthEast().lng() + 0.01
-        );
+            );
         var extendSW = new google.maps.LatLng(
             bounds.getSouthWest().lat() - 0.01,
             bounds.getSouthWest().lng() - 0.01
-        );
+            );
         bounds.extend(extendNE);
         bounds.extend(extendSW);
         map.fitBounds(bounds);
@@ -267,14 +267,22 @@ var ViewModel = function() {
         populateInfoWindow(marker, infoWindow);
     };
 
-    self.filterMap = function() {};
-
     // Show all results and close any open infowindow
     self.resetFilters = function() {
-        infoWindow.marker = null;
+        infoWindow.close();
+
+        var bounds = new google.maps.LatLngBounds();
+        markers.forEach(function(marker) {
+            marker.setMap(map);
+            bounds.extend(marker.position);
+        });
+        map.fitBounds(bounds);
     };
+    
+    self.filterMap = function() {};
 };
 
+// Bounce marker once
 function bounceMarker(marker) {
     marker.setAnimation(google.maps.Animation.BOUNCE);
     window.setTimeout(function() {
