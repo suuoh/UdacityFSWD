@@ -1,4 +1,5 @@
 var map;
+var bounds;
 var places = [
     {
         id: 0,
@@ -248,9 +249,59 @@ var ViewModel = function() {
     // Open infowindow for a specific place and focus map on result
     self.focusPlace = function(place) {
         var marker = markers[place.id];
-        var bounds = new google.maps.LatLngBounds();
+        bounds = new google.maps.LatLngBounds();
         bounds.extend(marker.position);
+        updateMapBounds();
 
+        populateInfoWindow(marker, infoWindow);
+    };
+
+    // Show all results and close any open infowindow
+    self.resetFilters = function() {
+        infoWindow.close();
+        self.results.removeAll();
+        bounds = new google.maps.LatLngBounds();
+
+        places.forEach(function(place) {
+            marker = markers[place.id];
+            marker.setMap(map);
+            bounds.extend(marker.position);
+            self.results.push(place);
+        });
+        map.fitBounds(bounds);
+    };
+
+    // Filter map by category
+    self.filterMap = function(category) {
+        infoWindow.close();
+        self.results.removeAll();
+        bounds = new google.maps.LatLngBounds();
+
+        // Find places with matching category
+        for (var i = 0; i < places.length; i++) {
+            if (places[i].category === category) {
+                markers[i].setMap(map);
+                bounds.extend(markers[i].position);
+                self.results.push(places[i]);
+            } else {
+                markers[i].setMap(null);
+            }
+        }
+
+        updateMapBounds();
+    };
+};
+
+// Bounce marker once
+function bounceMarker(marker) {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    window.setTimeout(function() {
+        marker.setAnimation(null);
+    }, 1000);
+}
+
+function updateMapBounds() {
+    if (bounds) {
         // Prevent map from zooming in too far
         var extendNE = new google.maps.LatLng(
             bounds.getNorthEast().lat() + 0.01,
@@ -263,31 +314,7 @@ var ViewModel = function() {
         bounds.extend(extendNE);
         bounds.extend(extendSW);
         map.fitBounds(bounds);
-
-        populateInfoWindow(marker, infoWindow);
-    };
-
-    // Show all results and close any open infowindow
-    self.resetFilters = function() {
-        infoWindow.close();
-
-        var bounds = new google.maps.LatLngBounds();
-        markers.forEach(function(marker) {
-            marker.setMap(map);
-            bounds.extend(marker.position);
-        });
-        map.fitBounds(bounds);
-    };
-    
-    self.filterMap = function() {};
-};
-
-// Bounce marker once
-function bounceMarker(marker) {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-    window.setTimeout(function() {
-        marker.setAnimation(null);
-    }, 1000);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
