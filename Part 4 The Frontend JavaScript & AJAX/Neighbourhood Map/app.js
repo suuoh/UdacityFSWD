@@ -322,6 +322,7 @@ function updateMapBounds() {
     }
 }
 
+// Get Wikipedia links for non-restaurants
 function getWikiLinks() {
     var wikiURL = "https://en.wikipedia.org/w/api.php?";
     wikiURL += "action=opensearch&format=json";
