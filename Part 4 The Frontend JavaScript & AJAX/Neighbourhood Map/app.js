@@ -186,9 +186,6 @@ function initMap() {
         var marker = new google.maps.Marker({
             position: places[i].location,
             title: places[i].name,
-            address: places[i].address,
-            category: places[i].category,
-            place_id: places[i].place_id,
             animation: google.maps.Animation.DROP,
             id: i,
             map: map
@@ -268,16 +265,24 @@ var ViewModel = function() {
 // Create and open infowindow on a given marker
 function populateInfoWindow(marker, infowindow) {
     if (infowindow.marker != marker) {
+        var place = places[marker.id];
         infowindow.marker = marker;
+        var infoContent = "";
 
         // Set infowindow content to include link to Google Maps in new window
-        infoContent = "";
-        infoContent += "<h4>" + marker.title + "</h4>"; // Name of place
-        infoContent += "<p><em>" + marker.category + "</em></p>"; // Category
-        infoContent += "<p>" + marker.address + "</p>"; // Street address
-        infoContent += "<p><a href='https://www.google.com/maps/dir/?api=1&destination=";
-        infoContent += marker.title + "&destination_place_id=" + marker.place_id;
+        infoContent += "<h4>" + place.name + "</h4>"; // Name of place
+        infoContent += "<p><em>" + place.category + "</em></p>"; // Category
+        infoContent += "<p>" + place.address + "</p>"; // Street address
+        infoContent +=
+        "<p><a href='https://www.google.com/maps/dir/?api=1&destination=";
+        infoContent += place.name + "&destination_place_id=" + place.place_id;
         infoContent += "' target='_blank'>Get Directions</a>"; // Google Maps directions
+        // If it exists, include Wikipedia link
+        if (place.wikipedia)
+            infoContent +=
+        "<p><a href='" +
+        place.wikipedia +
+        "' target='_blank'>Wikipedia</a></p>";
 
         infowindow.setContent(infoContent);
         infowindow.open(map, marker);
@@ -317,7 +322,27 @@ function updateMapBounds() {
     }
 }
 
+function getWikiLinks() {
+    var wikiURL = "https://en.wikipedia.org/w/api.php?";
+    wikiURL += "action=opensearch&format=json";
+    wikiURL += "&search=";
+
+    places.forEach(function(place) {
+        if (place.category !== "Restaurant") {
+            $.ajax({
+                url: wikiURL + place.name,
+                dataType: "jsonp",
+                success: function(data) {
+                    place.wikipedia =
+                    "https://en.wikipedia.org/wiki/" + data[1][0];
+                }
+            });
+        }
+    });
+}
+
 // Apply Knockout bindings when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
+$(function() {
     ko.applyBindings(new ViewModel());
+    getWikiLinks();
 });
