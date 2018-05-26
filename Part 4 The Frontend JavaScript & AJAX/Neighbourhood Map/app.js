@@ -205,33 +205,6 @@ function initMap() {
     }
 }
 
-function populateInfoWindow(marker, infowindow) {
-    if (infowindow.marker != marker) {
-        infowindow.marker = marker;
-        // Set infowindow content to include link to Google Maps in new window
-        infowindow.setContent(
-            "<h4>" +
-            marker.title +
-            "</h4><div><p><em>" +
-            marker.category +
-            "</em></p><p>" +
-            marker.address +
-            "</p><p><a href='https://www.google.com/maps/dir/?api=1&destination=" +
-            marker.title +
-            "&destination_place_id=" +
-            marker.place_id +
-            "' target='_blank'>Get Directions</a></div>"
-            );
-        infowindow.open(map, marker);
-        // Close InfoWindow
-        infowindow.addListener("closeclick", function() {
-            infowindow.marker = null;
-        });
-
-        bounceMarker(marker);
-    }
-}
-
 var ViewModel = function() {
     var self = this;
     // Category filters
@@ -292,6 +265,32 @@ var ViewModel = function() {
     };
 };
 
+// Create and open infowindow on a given marker
+function populateInfoWindow(marker, infowindow) {
+    if (infowindow.marker != marker) {
+        infowindow.marker = marker;
+
+        // Set infowindow content to include link to Google Maps in new window
+        infoContent = "";
+        infoContent += "<h4>" + marker.title + "</h4>"; // Name of place
+        infoContent += "<p><em>" + marker.category + "</em></p>"; // Category
+        infoContent += "<p>" + marker.address + "</p>"; // Street address
+        infoContent += "<p><a href='https://www.google.com/maps/dir/?api=1&destination=";
+        infoContent += marker.title + "&destination_place_id=" + marker.place_id;
+        infoContent += "' target='_blank'>Get Directions</a>"; // Google Maps directions
+
+        infowindow.setContent(infoContent);
+        infowindow.open(map, marker);
+
+        // Close InfoWindow when it is clicked
+        infowindow.addListener("closeclick", function() {
+            infowindow.marker = null;
+        });
+
+        bounceMarker(marker);
+    }
+}
+
 // Bounce marker once
 function bounceMarker(marker) {
     marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -300,6 +299,7 @@ function bounceMarker(marker) {
     }, 1000);
 }
 
+// Fit current view to map bounds with a buffer
 function updateMapBounds() {
     if (bounds) {
         // Prevent map from zooming in too far
@@ -317,6 +317,7 @@ function updateMapBounds() {
     }
 }
 
+// Apply Knockout bindings when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
     ko.applyBindings(new ViewModel());
 });
