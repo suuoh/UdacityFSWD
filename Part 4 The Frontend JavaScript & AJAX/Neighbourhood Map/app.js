@@ -1,6 +1,7 @@
 var map;
 var places = [
     {
+        id: 0,
         name: "Casa Loma",
         category: "Attraction",
         location: {lat: 43.6780371, lng: -79.4094439},
@@ -8,6 +9,7 @@ var places = [
         address: "1 Austin Terrace, Toronto, ON M5R 1X8"
     },
     {
+        id: 1,
         name: "Chase Fish and Oyster",
         category: "Restaurant",
         location: {lat: 43.651082, lng: -79.379378},
@@ -15,6 +17,7 @@ var places = [
         address: "10 Temperance St, first floor, Toronto, ON M5H 1Y4"
     },
     {
+        id: 2,
         name: "CN Tower",
         category: "Attraction",
         location: {lat: 43.6425662, lng: -79.3870568},
@@ -22,6 +25,7 @@ var places = [
         address: "301 Front St W, Toronto, ON M5V 2T6"
     },
     {
+        id: 3,
         name: "Miku",
         category: "Restaurant",
         location: {lat: 43.6412346, lng: -79.3773697},
@@ -29,6 +33,7 @@ var places = [
         address: "10 Bay St # 105, Toronto, ON M5J 2R8"
     },
     {
+        id: 4,
         name: "Ripley's Aquarium of Canada",
         category: "Attraction",
         location: {lat: 43.64240299999999, lng: -79.385971},
@@ -36,6 +41,7 @@ var places = [
         address: "288 Bremner Blvd, Toronto, ON M5V 3L9"
     },
     {
+        id: 5,
         name: "Royal Ontario Museum",
         category: "Attraction",
         location: {lat: 43.6677097, lng: -79.3947771},
@@ -43,6 +49,7 @@ var places = [
         address: "100 Queens Park, Toronto, ON M5S 2C6"
     },
     {
+        id: 6,
         name: "Snakes & Lattes",
         category: "Entertainment",
         location: {lat: 43.6649006, lng: -79.4131884},
@@ -50,6 +57,7 @@ var places = [
         address: "600 Bloor St W, Toronto, ON M6G 1K4"
     },
     {
+        id: 7,
         name: "Terroni",
         category: "Restaurant",
         location: {lat: 43.650916, lng: -79.375685},
@@ -57,6 +65,7 @@ var places = [
         address: "57 Adelaide St E, Toronto, ON M5C 1K6"
     },
     {
+        id: 8,
         name: "TIFF Bell Lightbox",
         category: "Entertainment",
         location: {lat: 43.6465295, lng: -79.3904082},
@@ -64,6 +73,7 @@ var places = [
         address: "350 King St W, Toronto, ON M5V 3X5"
     },
     {
+        id: 9,
         name: "Toronto City Hall",
         category: "Attraction",
         location: {lat: 43.6534399, lng: -79.38409009999999},
@@ -71,6 +81,7 @@ var places = [
         address: "100 Queen St W, Toronto, ON M5H 2N2"
     },
     {
+        id: 10,
         name: "University of Toronto",
         category: "School",
         location: {lat: 43.6628917, lng: -79.39565640000001},
@@ -234,16 +245,33 @@ var ViewModel = function() {
         self.results.push(place);
     });
 
+    // Open infowindow for a specific place and focus map on result
+    self.focusPlace = function(place) {
+        var marker = markers[place.id];
+        var bounds = new google.maps.LatLngBounds();
+        bounds.extend(marker.position);
+
+        // Prevent map from zooming in too far
+        var extendNE = new google.maps.LatLng(
+            bounds.getNorthEast().lat() + 0.01,
+            bounds.getNorthEast().lng() + 0.01
+        );
+        var extendSW = new google.maps.LatLng(
+            bounds.getSouthWest().lat() - 0.01,
+            bounds.getSouthWest().lng() - 0.01
+        );
+        bounds.extend(extendNE);
+        bounds.extend(extendSW);
+        map.fitBounds(bounds);
+
+        populateInfoWindow(marker, infoWindow);
+    };
+
     self.filterMap = function() {};
 
-    self.focusPlace = function(place) {
-        console.log(place.name);
-        for (var i = 0; i < markers.length; i++) {
-            var marker = markers[i];
-            if (marker.title === place.name) {
-                populateInfoWindow(marker, infoWindow);
-            }
-        }
+    // Show all results and close any open infowindow
+    self.resetFilters = function() {
+        infoWindow.marker = null;
     };
 };
 
