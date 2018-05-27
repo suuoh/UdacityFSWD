@@ -11,39 +11,41 @@
 
 <body>
   <nav class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">mapTO</a>
+    <a class="navbar-brand col-3 mr-0" href="#">mapTO</a>
     <!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
+    <form class="form-inline">
+      <a class="btn btn-outline-secondary btn-sm d-sm-none" data-toggle="collapse" href="#sidebar" role="button" aria-expanded="false" aria-controls="sidebar">Toggle Menu
+      </a>
+    </form>
   </nav>
 
   <div class="container-fluid h-100">
     <div class="row h-100">
-      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-        <div class="sidebar-sticky">
-          <h8 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
-            <a id="reset-filters" href="#" data-bind="click: resetFilters">Reset Filters</a>
-          </h8>
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>Filter by Category</span>
-          </h6>
-          <ul class="nav flex-column" data-bind="foreach: categories">
-            <li class="nav-item">
-              <a class="nav-link" href="#" data-bind="text: $data, click: $parent.filterMap">
-              </a>
-            </li>
-          </ul>
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>Results</span>
-          </h6>
-          <ul class="nav flex-column" data-bind="foreach: results">
-            <li class="nav-item">
-              <a class="nav-link" href="#" data-bind="text: name, click: $parent.focusPlace">
-              </a>
-            </li>
-          </ul>
-        </div>
+      <nav id="sidebar" class="col-12 col-sm-4 col-xl-2 bg-light collapse show">
+        <h8 class="d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+          <a href="#" data-bind="click: resetFilters">Reset Filters</a>
+        </h8>
+        <h6 class="d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Filter by Category</span>
+        </h6>
+        <ul class="nav flex-column collapse show" data-bind="foreach: categories">
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bind="text: $data, click: $parent.filterMap">
+            </a>
+          </li>
+        </ul>
+        <h6 class="d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Results</span>
+        </h6>
+        <ul class="nav flex-column collapse show" data-bind="foreach: results">
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bind="text: name, click: $parent.focusPlace">
+            </a>
+          </li>
+        </ul>
       </nav>
 
-      <main role="main" class="col-md-9 col-lg-10 px-0">
+      <main role="main" class="col-12 col-sm-8 col-xl-10 px-0">
         <div id="map">
           <noscript>Your browser does not support JavaScript!</noscript>
           Error! Google Maps could not be loaded.
@@ -56,12 +58,10 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>-->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.12/js/all.js" integrity="sha384-Voup2lBiiyZYkRto2XWqbzxHXwzcm4A5RfdfG6466bu5LqjwwrjXCMBQBLMWh7qR" crossorigin="anonymous"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNDtRz0TyVfnODlSWL-I4LIq9dQBZ3Edw&v=3&callback=initMap"></script>
   <script src="app.js"></script>
 </body>
-
 </html>
