@@ -205,6 +205,7 @@ function initMap() {
 
 var ViewModel = function() {
     var self = this;
+
     // Category filters
     self.categories = ko.observableArray([
         "Attraction",
@@ -212,6 +213,7 @@ var ViewModel = function() {
         "Restaurant",
         "School"
         ]);
+
     self.results = ko.observableArray([]);
     places.forEach(function(place) {
         self.results.push(place);
@@ -261,6 +263,15 @@ var ViewModel = function() {
 
         updateMapBounds();
     };
+
+    // Toggle sidebar (on small screens only)
+    self.sidebarVisible = ko.observable(true);
+    self.toggleSidebar = function() {
+        if (self.sidebarVisible())
+            self.sidebarVisible(false);
+        else
+            self.sidebarVisible(true);
+    }
 };
 
 // Create and open infowindow on a given marker
@@ -347,6 +358,7 @@ function getWikiLinks() {
     });
 }
 
+// Show alert and log errors when API libraries cannot be loaded
 function libraryError(library, popup) {
     var message = "Oops! There was an issue loading the " + library + " library. Please try again by refreshing the page.";
     if (popup)

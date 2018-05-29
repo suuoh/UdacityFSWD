@@ -14,21 +14,21 @@
     <a class="navbar-brand col-3 mr-0" href="#">mapTO</a>
     <!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
     <form class="form-inline">
-      <a class="btn btn-outline-secondary btn-sm d-sm-none" data-toggle="collapse" href="#sidebar" role="button" aria-expanded="false" aria-controls="sidebar">Toggle Menu
+      <a class="btn btn-outline-secondary btn-sm d-sm-none" data-bind="click: toggleSidebar" role="button" aria-expanded="false" aria-controls="sidebar">Toggle Menu
       </a>
     </form>
   </nav>
 
   <div class="container-fluid h-100">
     <div class="row h-100">
-      <nav id="sidebar" class="col-12 col-sm-4 col-xl-2 bg-light collapse show">
+      <nav id="sidebar" class="col-12 col-sm-4 col-xl-2 bg-light collapse show" data-bind="css: {show: sidebarVisible}">
         <h6 class="d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
           <a href="#" data-bind="click: resetFilters">Reset Filters</a>
         </h6>
         <h6 class="d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>Filter by Category</span>
         </h6>
-        <ul class="nav flex-column collapse show" data-bind="foreach: categories">
+        <ul class="nav flex-column" data-bind="foreach: categories">
           <li class="nav-item">
             <a class="nav-link" href="#" data-bind="text: $data, click: $parent.filterMap">
             </a>
@@ -37,7 +37,7 @@
         <h6 class="d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
           <span>Results</span>
         </h6>
-        <ul class="nav flex-column collapse show" data-bind="foreach: results">
+        <ul class="nav flex-column" data-bind="foreach: results">
           <li class="nav-item">
             <a class="nav-link" href="#" data-bind="text: name, click: $parent.focusPlace">
             </a>

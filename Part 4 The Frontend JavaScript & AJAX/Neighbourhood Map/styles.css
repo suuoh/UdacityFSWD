@@ -3,6 +3,14 @@ body {
   height: 100%;
 }
 
+.btn-outline-secondary {
+    color: #aaa !important;
+}
+
+.btn-outline-secondary:hover {
+    color: white !important;
+}
+
 .map-canvas {
   height: 100%;
 }
