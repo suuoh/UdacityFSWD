@@ -271,7 +271,7 @@ var ViewModel = function() {
             self.sidebarVisible(false);
         else
             self.sidebarVisible(true);
-    }
+    };
 };
 
 // Create and open infowindow on a given marker
