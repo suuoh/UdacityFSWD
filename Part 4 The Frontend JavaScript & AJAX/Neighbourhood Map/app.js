@@ -337,10 +337,22 @@ function getWikiLinks() {
                 success: function(data) {
                     place.wikipedia =
                     "https://en.wikipedia.org/wiki/" + data[1][0];
+                },
+                timeout: 5000, // JSONP requests do not fire jQuery's error event, so a timeout is set instead
+                error: function(data) {
+                    libraryError("Wikipedia", false); // App and interface still function fine if Wikipedia fails to load
                 }
             });
         }
     });
+}
+
+function libraryError(library, popup) {
+    var message = "Oops! There was an issue loading the " + library + " library. Please try again by refreshing the page.";
+    if (popup)
+        alert(message);
+    console.log(message);
+    return false;
 }
 
 // Apply Knockout bindings when DOM is loaded

@@ -46,9 +46,8 @@
       </nav>
 
       <div class="col-12 col-sm-8 col-xl-10 px-0">
-        <div id="map">
+        <div id="map" class="map-canvas">
           <noscript>Your browser does not support JavaScript!</noscript>
-          Error! Google Maps could not be loaded.
         </div>
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         </div>
@@ -59,7 +58,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.12/js/all.js" integrity="sha384-Voup2lBiiyZYkRto2XWqbzxHXwzcm4A5RfdfG6466bu5LqjwwrjXCMBQBLMWh7qR" crossorigin="anonymous"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNDtRz0TyVfnODlSWL-I4LIq9dQBZ3Edw&v=3&callback=initMap"></script>
   <script src="app.js"></script>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNDtRz0TyVfnODlSWL-I4LIq9dQBZ3Edw&v=3&callback=initMap" onerror="libraryError('Google Maps', true)"></script>
 </body>
 </html>
