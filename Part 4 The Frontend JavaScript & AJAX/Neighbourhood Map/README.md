@@ -12,3 +12,4 @@ A custom web application that displays points of interest in Toronto, Canada.
 
 **To Do:**
 * Look into [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+* Use [template strings](https://developers.google.com/web/updates/2015/01/ES6-Template-Strings)
